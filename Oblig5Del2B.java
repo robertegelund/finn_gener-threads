@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Oblig5Del2A {
+public class Oblig5Del2B {
     public static void main(String[] args) {
         if(args.length == 0) {
             System.out.println("[ERROR] Du maa sende inn mappestien som argument til programmet: " + 
@@ -20,7 +20,7 @@ public class Oblig5Del2A {
         }
 
         // Oppretter subsekvensregister, leser inn filer og legger inn subsekvenser
-        Monitor1 monitor = new Monitor1();
+        Monitor2 monitor = new Monitor2();
         ArrayList<Thread> traader = new ArrayList<>(); 
         while(sc.hasNextLine()) {
             String filnavn = args[0] + "/" + sc.nextLine();

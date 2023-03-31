@@ -1,10 +1,11 @@
+
 public class LeseTraad implements Runnable {
     public static int traadTeller = 0;
     private int traadID;
-    Monitor1 monitor;
+    Monitor2 monitor;
     String filnavn;
 
-    public LeseTraad(Monitor1 monitor, String filnavn) {
+    public LeseTraad(Monitor2 monitor, String filnavn) {
         this.monitor = monitor;
         this.filnavn = filnavn;
         traadID = traadTeller;
