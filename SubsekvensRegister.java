@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class SubsekvensRegister {
-    List<Map<String, Subsekvens>> subsekvenser = new ArrayList<>();
+    private List<Map<String, Subsekvens>> subsekvenser = new ArrayList<>();
 
     public void settInn(Map<String, Subsekvens> map) {
         subsekvenser.add(map);
@@ -40,7 +40,6 @@ public class SubsekvensRegister {
                 sub +=  Character.toString(linje.charAt(i)) + 
                         Character.toString(linje.charAt(i+1)) + 
                         Character.toString(linje.charAt(i+2));
-                System.out.println(sub);
 
                 //Går til neste iterasjon hvis subsekvensen allerede finnes i hMap
                 if(hMap.get(sub) != null) continue;
@@ -48,10 +47,33 @@ public class SubsekvensRegister {
                 hMap.put(sub, new Subsekvens(sub, 1));
             }
         }
+
+        for(Subsekvens sub : hMap.values()) {
+            System.out.print(sub + " ");
+        }
+        
         return hMap;
     }
 
-    public static void main(String[] args) {
-        lesFil("./TestDataLiten/fil1.csv");
+    public static Map<String, Subsekvens> slaaSammen(
+                Map<String, Subsekvens> hMap1,
+                Map<String, Subsekvens> hMap2) {
+
+        Map<String, Subsekvens> stoerst = null, minst = null;
+        if(hMap1.size() >= hMap2.size()) {
+            stoerst = hMap1; minst = hMap2;
+        } else {
+            stoerst = hMap2; minst = hMap1;
+        }
+
+        for(Subsekvens sub : stoerst.values()) {
+            if(minst.values().contains(sub)) {
+                sub.endreAntall(sub.hentAntall());
+            }
+            minst.put(sub.subsekvens, sub);
+        }
+        
+        // Den minste HashMap er den sammenslaatte HashMap;
+        return minst;
     }
 }

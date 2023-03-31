@@ -1,5 +1,4 @@
 public class Subsekvens {
-
     public final String subsekvens;
     private int antall;
 
@@ -12,8 +11,8 @@ public class Subsekvens {
         return antall;
     }
 
-    public void endreAntall() {
-        antall++;
+    public void endreAntall(int tillegg) {
+        antall += tillegg;
     }
 
     @Override
