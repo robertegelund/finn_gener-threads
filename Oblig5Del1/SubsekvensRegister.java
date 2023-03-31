@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import Oblig5Del2B.Subsekvens;
+
 public class SubsekvensRegister {
     private List<Map<String, Subsekvens>> subsekvenser = new ArrayList<>();
 
