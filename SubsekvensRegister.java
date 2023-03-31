@@ -27,7 +27,7 @@ public class SubsekvensRegister {
         try {
             sc = new Scanner(new File(filnavn));
         } catch(FileNotFoundException e) {
-            System.out.println("Finner ikke filen: " + filnavn);
+            System.out.println("[ERROR] Finner ikke filen: " + filnavn);
         }
         
         Map<String, Subsekvens> hMap = new HashMap<>();

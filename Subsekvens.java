@@ -13,7 +13,6 @@ public class Subsekvens {
 
     public void endreAntall(int tillegg) {
         antall += tillegg;
-        System.out.println("Endrer antall");
     }
 
     @Override
