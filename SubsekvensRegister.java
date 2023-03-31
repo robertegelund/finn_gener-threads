@@ -33,14 +33,25 @@ public class SubsekvensRegister {
         Map<String, Subsekvens> hMap = new HashMap<>();
         while(sc.hasNextLine()) {
             String linje = sc.nextLine();
-            if(linje.length() < 3) System.exit(1); //TODO
+            if(linje.length() < 3) System.exit(1);
 
-            for(int i = 0; i < linje.length() - 2; i++) { 
+            for(int i = 0; i < linje.length()-2; i++) { 
                 String sub = "";
-                sub += linje.charAt(i) + linje.charAt(i+1) + linje.charAt(i+2); 
+                sub +=  Character.toString(linje.charAt(i)) + 
+                        Character.toString(linje.charAt(i+1)) + 
+                        Character.toString(linje.charAt(i+2));
+                System.out.println(sub);
+
+                //Går til neste iterasjon hvis subsekvensen allerede finnes i hMap
+                if(hMap.get(sub) != null) continue;
+
                 hMap.put(sub, new Subsekvens(sub, 1));
             }
         }
         return hMap;
+    }
+
+    public static void main(String[] args) {
+        lesFil("./TestDataLiten/fil1.csv");
     }
 }
