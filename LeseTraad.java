@@ -1,10 +1,14 @@
 public class LeseTraad implements Runnable {
+    public static int traadTeller = 0;
+    private int traadID;
     Monitor1 monitor;
     String filnavn;
 
     public LeseTraad(Monitor1 monitor, String filnavn) {
         this.monitor = monitor;
         this.filnavn = filnavn;
+        traadID = traadTeller;
+        traadTeller++;
     }
 
     @Override
@@ -12,5 +16,10 @@ public class LeseTraad implements Runnable {
         monitor.settInn(
             SubsekvensRegister.lesFil(filnavn)
         );
+        System.out.println("Traad " + traadID + " er ferdig med aa lese inn filen.");
+    }
+
+    public int hentID() {
+        return traadID;
     }
 }

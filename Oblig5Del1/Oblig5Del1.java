@@ -46,6 +46,6 @@ public class Oblig5Del1 {
             }
         }
 
-        System.out.println(mestFrekvente);
+        System.out.println("Mest frekvente subsekvens: " + mestFrekvente);
     } 
 }
