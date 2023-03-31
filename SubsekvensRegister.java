@@ -47,11 +47,8 @@ public class SubsekvensRegister {
                 hMap.put(sub, new Subsekvens(sub, 1));
             }
         }
+        sc.close();
 
-        for(Subsekvens sub : hMap.values()) {
-            System.out.print(sub + " ");
-        }
-        
         return hMap;
     }
 
@@ -67,10 +64,12 @@ public class SubsekvensRegister {
         }
 
         for(Subsekvens sub : stoerst.values()) {
-            if(minst.values().contains(sub)) {
-                sub.endreAntall(sub.hentAntall());
+            String subSek = sub.subsekvens;
+            if(minst.keySet().contains(subSek)) {
+                minst.get(subSek).endreAntall(sub.hentAntall());
+            } else {
+                minst.put(subSek, sub);
             }
-            minst.put(sub.subsekvens, sub);
         }
         
         // Den minste HashMap er den sammenslaatte HashMap;
