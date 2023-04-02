@@ -5,29 +5,28 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.Condition;
 
 public class Monitor2 {
-    private int flettingerIgjen = 0;
+    private volatile int flettingerIgjen = 0;
     private SubsekvensRegister subReg = new SubsekvensRegister();
-    private Lock regLaas = new ReentrantLock();
-    private Lock flettingerLaas = new ReentrantLock();
-    private Condition finnesIkkeTo = regLaas.newCondition();
+    private Lock laas = new ReentrantLock();
+    private Condition finnesIkkeTo = laas.newCondition();
 
     public void settInn(Map<String, Subsekvens> hMap) throws InterruptedException {
-        regLaas.lock();
+        laas.lock();
         try {
             subReg.settInn(hMap);
         } finally {
-            regLaas.unlock();
+            laas.unlock();
         }   
     }
 
     public void settInnFlettet(Map<String, Subsekvens> hMap) throws InterruptedException {
-        regLaas.lock();
+        laas.lock();
         try {
             subReg.settInn(hMap);
             dekrementerFlettingerIgjen();
             if(antall() >= 2 || !erFlettingerIgjen()) finnesIkkeTo.signalAll();
         } finally {
-            regLaas.unlock();
+            laas.unlock();
         } 
     }
 
@@ -36,7 +35,7 @@ public class Monitor2 {
     }
 
     public ArrayList<Map<String, Subsekvens>> taUtTo() throws InterruptedException {
-        regLaas.lock();
+        laas.lock();
         try {
             while(antall() < 2 && erFlettingerIgjen()) {finnesIkkeTo.await();}
             if(!erFlettingerIgjen()) return null;
@@ -44,7 +43,7 @@ public class Monitor2 {
             hMapListe.add(subReg.taUt()); hMapListe.add(subReg.taUt());
             return hMapListe;
         } finally {
-            regLaas.unlock();
+            laas.unlock();
         }
     }
 
@@ -61,20 +60,10 @@ public class Monitor2 {
     }
 
     public void dekrementerFlettingerIgjen() {
-        flettingerLaas.lock();
-        try {
-            flettingerIgjen--;
-        } finally {
-            flettingerLaas.unlock();
-        }
+        flettingerIgjen--;
     }
 
     public boolean erFlettingerIgjen() {
-        flettingerLaas.lock();
-        try {
-            return flettingerIgjen > 0;
-        } finally {
-            flettingerLaas.unlock();
-        }
+        return flettingerIgjen > 0;
     }
 }

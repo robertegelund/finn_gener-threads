@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Oblig5Del2B {
+public class Oblig5Hele {
     public static final int ANT_TELLETRAADER = 8;
     public static void main(String[] args) {
         if(args.length == 0) {
