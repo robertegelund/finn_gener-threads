@@ -17,6 +17,10 @@ public class SubsekvensRegister {
         return subsekvenser.remove(0);
     }
 
+    public Map<String, Subsekvens> hentForste() {
+        return subsekvenser.get(0);
+    }
+
     public int antall() {
         return subsekvenser.size();
     }

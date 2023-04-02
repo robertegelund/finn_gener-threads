@@ -14,10 +14,16 @@ public class LeseTraad implements Runnable {
 
     @Override
     public void run() {
-        monitor.settInn(
-            SubsekvensRegister.lesFil(filnavn)
-        );
-        System.out.println("Traad " + traadID + " er ferdig med aa lese inn filen.");
+        try {
+            monitor.settInn(
+                SubsekvensRegister.lesFil(filnavn)
+            );
+            System.out.println("Traad " + traadID + " er ferdig med aa lese inn filen.");
+        } catch(InterruptedException e) {
+            System.out.printf(
+                "[ERROR] Lesetraad med id %d ble avbrutt.",
+                traadID);
+        }
     }
 
     public int hentID() {

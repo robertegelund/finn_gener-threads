@@ -1,10 +1,10 @@
-import java.util.Map;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Oblig5Del2B {
+    public static final int ANT_TELLETRAADER = 8;
     public static void main(String[] args) {
         if(args.length == 0) {
             System.out.println("[ERROR] Du maa sende inn mappestien som argument til programmet: " + 
@@ -21,39 +21,46 @@ public class Oblig5Del2B {
 
         // Oppretter subsekvensregister, leser inn filer og legger inn subsekvenser
         Monitor2 monitor = new Monitor2();
-        ArrayList<Thread> traader = new ArrayList<>(); 
+        ArrayList<Thread> lesetraader = new ArrayList<>(); 
         while(sc.hasNextLine()) {
             String filnavn = args[0] + "/" + sc.nextLine();
             Thread nyTraad = new Thread(new LeseTraad(monitor, filnavn));
-            traader.add(nyTraad);
+            lesetraader.add(nyTraad);
             nyTraad.start();
         }
 
-        // Soerger for at main-traaden venter til alle lesetraadene er ferdige
-        for(Thread traad : traader) {
+        // Soerger for at main-traaden venter til alle lesetraadene er ferdige foer flettetraadene opprettes
+        for(Thread traad : lesetraader) {
             try {
                 traad.join();
             } catch(InterruptedException e) { 
-                System.out.println("En traad ble avbrutt.");
+                System.out.println("En lesetraad ble avbrutt.");
             }
         }
 
         // Antall som skal flettes blir én mindre enn stoerrelsen til beholderen
-        int subSekAntall = monitor.antall();
-        Map<String, Subsekvens> hMapSammen = null;
-        
-        // Slaar sammen to og to inntil man sitter igjen med én HashMap
-        for(int i = 0; i < subSekAntall - 1; i++) {
-            Map<String, Subsekvens> hMap1 = monitor.taUt(), hMap2 = monitor.taUt();
-            hMapSammen = SubsekvensRegister.slaaSammen(hMap1, hMap2);
-            monitor.settInn(hMapSammen);
+        monitor.settFlettingerIgjen(monitor.antall() - 1);
+        ArrayList<Thread> flettetraader = new ArrayList<>();
+        for(int i = 0; i < ANT_TELLETRAADER; i++) {
+            Thread nyTraad = new Thread(new FletteTraad(monitor));
+            flettetraader.add(nyTraad);
+            nyTraad.start();
+        }
+
+        // Soerger for at main-traaden venter til alle flettetraadene er ferdige
+        for(Thread traad : flettetraader) {
+            try {
+                traad.join();
+            } catch(InterruptedException e) {
+                System.out.println("En flettetraad ble avbrutt");
+            }
         }
 
         // Finner og skriver ut den mest frekvente subsekvensen i siste HashMap
         int hoeyesteFrekvens = 0;
         Subsekvens mestFrekvente = null;
-        for(String noekkel : hMapSammen.keySet()) {
-            Subsekvens subsek = hMapSammen.get(noekkel); int frekvens = subsek.hentAntall();
+        for(String noekkel : monitor.hentForste().keySet()) {
+            Subsekvens subsek = monitor.hentForste().get(noekkel); int frekvens = subsek.hentAntall();
             if(frekvens > hoeyesteFrekvens) {
                 hoeyesteFrekvens = frekvens;
                 mestFrekvente = subsek;
