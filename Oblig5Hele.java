@@ -93,7 +93,6 @@ public class Oblig5Hele {
             else if(frekvensDiff >= 2) hyppigste2.add(subsekVirus);
             
         }
-
         
         if(hyppigste7.size() != 0) {
             System.out.println("\n\nSubsekvenser som forekommer flest ganger (7 eller flere)" + 
