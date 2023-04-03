@@ -30,5 +30,4 @@ public class FletteTraad implements Runnable {
             );
         }
     }
-
 }

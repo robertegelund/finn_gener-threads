@@ -41,12 +41,13 @@ public class Oblig5Hele {
         }
         
         // Soerger for at main-traaden venter til alle lesetraadene er ferdige foer flettetraadene opprettes
-        for(Thread traad : lesetraader) {
-            try {
+        try {
+            for(Thread traad : lesetraader) {
                 traad.join();
-            } catch(InterruptedException e) { 
-                System.out.println("En lesetraad ble avbrutt.");
             }
+        } catch (InterruptedException e) {
+            System.out.println("[ERROR] En lesetraad ble avbrutt. Programmet avsluttes.");
+            System.exit(1);
         }
         
         // Antall som skal flettes blir én mindre enn stoerrelsen til beholderen
@@ -66,7 +67,8 @@ public class Oblig5Hele {
             try {
                 traad.join();
             } catch(InterruptedException e) {
-                System.out.println("En flettetraad ble avbrutt");
+                System.out.println("[ERROR] En flettetraad med ble avbrutt," + 
+                "men de andre flettetraadene fortsetter.");
             }
         }
 
