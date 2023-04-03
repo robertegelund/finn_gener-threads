@@ -71,7 +71,7 @@ public class Oblig5Hele {
             }
         }
 
-        // Finner og skriver ut frekvensene som forekommer i stoerre grad hos de som har hatt viruset
+        // Finner subsekvensene som forekommer i stoerre grad hos de som har hatt viruset
         Map<String, Subsekvens> hMapVirus = monitorVirus.hentForste();
         Map<String, Subsekvens> hMapIkkeVirus = monitorIkkeVirus.hentForste();
         ArrayList<Subsekvens> hyppigste2 = new ArrayList<>(), hyppigste5 = new ArrayList<>(),
@@ -91,25 +91,26 @@ public class Oblig5Hele {
             if(frekvensDiff >= 7) hyppigste7.add(subsekVirus);
             else if(frekvensDiff >= 5) hyppigste5.add(subsekVirus);
             else if(frekvensDiff >= 2) hyppigste2.add(subsekVirus);
-            
         }
         
+        // Skriver ut subsekvensene som forekommer i stoerre grad hos de som har hatt viruset
         if(hyppigste7.size() != 0) {
             System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (7 eller flere)" + 
             " hos de som har hatt viruset:");
-            skrivUtListe(hyppigste7);
+            printHyppigsteSekvenser(hyppigste7);
         } else if(hyppigste5.size() != 0) {
             System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (5 eller flere, men faerre enn 7)" +
             " hos de som har hatt viruset:");
-            skrivUtListe(hyppigste5);
+            printHyppigsteSekvenser(hyppigste5);
         } else if(hyppigste2.size() != 0) {
             System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (2 eller flere, men faerre enn 5)" +
             " hos de som har hatt viruset:");
-            skrivUtListe(hyppigste2);
+            printHyppigsteSekvenser(hyppigste2);
         }
     }
     
-    private static void skrivUtListe(ArrayList<Subsekvens> hyppigste) {
+    //Hjelpemetode for utskrift av hyppigste sybsekvenser
+    private static void printHyppigsteSekvenser(ArrayList<Subsekvens> hyppigste) {
         for(Subsekvens subsek : hyppigste) {
             System.out.println(subsek);
         }
