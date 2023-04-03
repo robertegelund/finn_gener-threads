@@ -20,7 +20,7 @@ public class Oblig5Hele {
             System.out.println("[ERROR] Finner ikke filen: metadata.csv");
         }
 
-        // Oppretter subsekvensregister, leser inn filer og legger inn subsekvenser
+        // Oppretter monitorer, leser inn filer og legger inn subsekvenser
         Monitor2 monitorVirus = new Monitor2();
         Monitor2 monitorIkkeVirus = new Monitor2();
         
@@ -30,7 +30,6 @@ public class Oblig5Hele {
             String filnavn = args[0] + "/" + deler[0];
             Thread nyTraad = null;
 
-            
             if(deler[1].equals("True")) {
                 nyTraad = new Thread(new LeseTraad(monitorVirus, filnavn));
             } else if(deler[1].equals("False")) {
@@ -82,11 +81,8 @@ public class Oblig5Hele {
             Subsekvens subsekVirus = hMapVirus.get(noekkel);
             
             int frekvensDiff = 0;
-            if(subsekIkkeVirus == null) {
-                frekvensDiff = subsekVirus.hentAntall();
-            } else if(subsekIkkeVirus != null) {
-                frekvensDiff = subsekVirus.hentAntall() - subsekIkkeVirus.hentAntall();
-            }
+            if(subsekIkkeVirus == null) frekvensDiff = subsekVirus.hentAntall();
+            else if(subsekIkkeVirus != null) frekvensDiff = subsekVirus.hentAntall() - subsekIkkeVirus.hentAntall();
 
             if(frekvensDiff >= 7) hyppigste7.add(subsekVirus);
             else if(frekvensDiff >= 5) hyppigste5.add(subsekVirus);
@@ -109,7 +105,7 @@ public class Oblig5Hele {
         }
     }
     
-    //Hjelpemetode for utskrift av hyppigste sybsekvenser
+    // Hjelpemetode for utskrift av hyppigste subsekvenser
     private static void printHyppigsteSekvenser(ArrayList<Subsekvens> hyppigste) {
         for(Subsekvens subsek : hyppigste) {
             System.out.println(subsek);
