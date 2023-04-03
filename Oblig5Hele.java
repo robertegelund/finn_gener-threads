@@ -95,15 +95,15 @@ public class Oblig5Hele {
         }
         
         if(hyppigste7.size() != 0) {
-            System.out.println("\n\nSubsekvenser som forekommer flest ganger (7 eller flere)" + 
+            System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (7 eller flere)" + 
             " hos de som har hatt viruset:");
             skrivUtListe(hyppigste7);
         } else if(hyppigste5.size() != 0) {
-            System.out.println("\n\nSubsekvenser som forekommer flest ganger (5 eller flere, men faerre enn 7)" +
+            System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (5 eller flere, men faerre enn 7)" +
             " hos de som har hatt viruset:");
             skrivUtListe(hyppigste5);
         } else if(hyppigste2.size() != 0) {
-            System.out.println("\n\nSubsekvenser som forekommer flest ganger (2 eller flere, men faerre enn 5)" +
+            System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (2 eller flere, men faerre enn 5)" +
             " hos de som har hatt viruset:");
             skrivUtListe(hyppigste2);
         }
