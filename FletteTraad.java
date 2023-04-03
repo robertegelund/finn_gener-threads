@@ -22,6 +22,7 @@ public class FletteTraad implements Runnable {
                 monitor.settInnFlettet(hMapSammen);
                 hMapListe = monitor.taUtTo();
             }
+            System.out.println("Traad " + traadID + " er ferdig med aa flette HashMaps.");
         } catch(InterruptedException e) {
             System.out.printf(
                 "[ERROR] FletteTraad med id %d ble avbrutt.",
