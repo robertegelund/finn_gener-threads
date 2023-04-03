@@ -37,6 +37,7 @@ public class SubsekvensRegister {
         Map<String, Subsekvens> hMap = new HashMap<>();
         while(sc.hasNextLine()) {
             String linje = sc.nextLine();
+            if(linje.equals("amino_acid")) linje = sc.nextLine(); //Hopper over "amino_acid" paa foerste linje i filene i Data
             if(linje.length() < 3) System.exit(1);
 
             for(int i = 0; i < linje.length()-2; i++) { 

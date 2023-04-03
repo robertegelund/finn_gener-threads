@@ -20,11 +20,21 @@ public class Oblig5Hele {
         }
 
         // Oppretter subsekvensregister, leser inn filer og legger inn subsekvenser
-        Monitor2 monitor = new Monitor2();
+        Monitor2 monitorVirus = new Monitor2();
+        Monitor2 monitorIkkeVirus = new Monitor2();
+        
         ArrayList<Thread> lesetraader = new ArrayList<>(); 
         while(sc.hasNextLine()) {
-            String filnavn = args[0] + "/" + sc.nextLine();
-            Thread nyTraad = new Thread(new LeseTraad(monitor, filnavn));
+            String[] deler = sc.nextLine().split(",");
+            String filnavn = args[0] + "/" + deler[0];
+            Thread nyTraad = null;
+            
+            if(deler[1].equals("True")) {
+                nyTraad = new Thread(new LeseTraad(monitorVirus, filnavn));
+            } else if(deler[1].equals("False")) {
+                nyTraad = new Thread(new LeseTraad(monitorIkkeVirus, filnavn));
+            }
+
             lesetraader.add(nyTraad);
             nyTraad.start();
         }
@@ -39,12 +49,15 @@ public class Oblig5Hele {
         }
 
         // Antall som skal flettes blir én mindre enn stoerrelsen til beholderen
-        monitor.settFlettingerIgjen(monitor.antall() - 1);
+        monitorVirus.settFlettingerIgjen(monitorVirus.antall() - 1);
+        monitorIkkeVirus.settFlettingerIgjen(monitorIkkeVirus.antall() - 1);
+
         ArrayList<Thread> flettetraader = new ArrayList<>();
         for(int i = 0; i < ANT_TELLETRAADER; i++) {
-            Thread nyTraad = new Thread(new FletteTraad(monitor));
-            flettetraader.add(nyTraad);
-            nyTraad.start();
+            Thread fletterVirus = new Thread(new FletteTraad(monitorVirus));
+            Thread fletterIkkeVirus = new Thread(new FletteTraad(monitorVirus));
+            flettetraader.add(fletterVirus); flettetraader.add(fletterIkkeVirus);
+            fletterVirus.start(); fletterIkkeVirus.start();
         }
 
         // Soerger for at main-traaden venter til alle flettetraadene er ferdige
@@ -56,17 +69,17 @@ public class Oblig5Hele {
             }
         }
 
-        // Finner og skriver ut den mest frekvente subsekvensen i siste HashMap
-        int hoeyesteFrekvens = 0;
-        Subsekvens mestFrekvente = null;
-        for(String noekkel : monitor.hentForste().keySet()) {
-            Subsekvens subsek = monitor.hentForste().get(noekkel); int frekvens = subsek.hentAntall();
-            if(frekvens > hoeyesteFrekvens) {
-                hoeyesteFrekvens = frekvens;
-                mestFrekvente = subsek;
-            }
-        }
+        // // Finner og skriver ut den mest frekvente subsekvensen i siste HashMap
+        // int hoeyesteFrekvens = 0;
+        // Subsekvens mestFrekvente = null;
+        // for(String noekkel : monitor.hentForste().keySet()) {
+        //     Subsekvens subsek = monitor.hentForste().get(noekkel); int frekvens = subsek.hentAntall();
+        //     if(frekvens > hoeyesteFrekvens) {
+        //         hoeyesteFrekvens = frekvens;
+        //         mestFrekvente = subsek;
+        //     }
+        // }
 
-        System.out.println("Mest frekvente subsekvens: " + mestFrekvente);
+        // System.out.println("Mest frekvente subsekvens: " + mestFrekvente);
     } 
 }
