@@ -7,26 +7,26 @@ import java.util.concurrent.locks.Condition;
 public class Monitor2 {
     private int flettingerIgjen = 0;
     private SubsekvensRegister subReg = new SubsekvensRegister();
-    private Lock laas = new ReentrantLock();
-    private Condition finnesIkkeTo = laas.newCondition();
+    private Lock laasSubreg = new ReentrantLock();
+    private Condition finnesIkkeTo = laasSubreg.newCondition();
 
     public void settInn(Map<String, Subsekvens> hMap) throws InterruptedException {
-        laas.lock();
+        laasSubreg.lock();
         try {
             subReg.settInn(hMap);
         } finally {
-            laas.unlock();
+            laasSubreg.unlock();
         }   
     }
 
     public void settInnFlettet(Map<String, Subsekvens> hMap) throws InterruptedException {
-        laas.lock();
+        laasSubreg.lock();
         try {
             subReg.settInn(hMap);
             dekrementerFlettingerIgjen();
             if(antall() >= 2 || !erFlettingerIgjen()) finnesIkkeTo.signalAll();
         } finally {
-            laas.unlock();
+            laasSubreg.unlock();
         } 
     }
 
@@ -35,7 +35,7 @@ public class Monitor2 {
     }
 
     public ArrayList<Map<String, Subsekvens>> taUtTo() throws InterruptedException {
-        laas.lock();
+        laasSubreg.lock();
         try {
             while(antall() < 2 && erFlettingerIgjen()) {finnesIkkeTo.await();}
             if(!erFlettingerIgjen()) return null;
@@ -43,7 +43,7 @@ public class Monitor2 {
             hMapListe.add(subReg.taUt()); hMapListe.add(subReg.taUt());
             return hMapListe;
         } finally {
-            laas.unlock();
+            laasSubreg.unlock();
         }
     }
 
