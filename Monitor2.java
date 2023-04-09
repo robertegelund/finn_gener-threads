@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.Condition;
 
 public class Monitor2 {
-    private volatile int flettingerIgjen = 0;
+    private int flettingerIgjen = 0;
     private SubsekvensRegister subReg = new SubsekvensRegister();
     private Lock laas = new ReentrantLock();
     private Condition finnesIkkeTo = laas.newCondition();
