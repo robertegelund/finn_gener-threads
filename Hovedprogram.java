@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -75,9 +76,10 @@ public class Hovedprogram {
         // Finner subsekvensene som forekommer i stoerre grad hos de som har hatt viruset
         Map<String, Subsekvens> hMapVirus = monitorVirus.hentForste();
         Map<String, Subsekvens> hMapIkkeVirus = monitorIkkeVirus.hentForste();
-        ArrayList<Subsekvens> hyppigste2 = new ArrayList<>(), hyppigste5 = new ArrayList<>(),
-                hyppigste7 = new ArrayList<>();
-
+        List<Subsekvens> hyppigste = null;
+        
+        int hoeyesteFrekvensDiff = 0;
+        Subsekvens hyppigsteSubsekvens = null;
         for(String noekkel : hMapVirus.keySet()) {
             Subsekvens subsekIkkeVirus = hMapIkkeVirus.get(noekkel);
             Subsekvens subsekVirus = hMapVirus.get(noekkel);
@@ -86,29 +88,18 @@ public class Hovedprogram {
             if(subsekIkkeVirus == null) frekvensDiff = subsekVirus.hentAntall();
             else if(subsekIkkeVirus != null) frekvensDiff = subsekVirus.hentAntall() - subsekIkkeVirus.hentAntall();
 
-            if(frekvensDiff >= 7) hyppigste7.add(subsekVirus);
-            else if(frekvensDiff >= 5) hyppigste5.add(subsekVirus);
-            else if(frekvensDiff >= 2) hyppigste2.add(subsekVirus);
-        }
-        
-        // Skriver ut subsekvensene som forekommer i stoerre grad hos de som har hatt viruset
-        if(hyppigste7.size() != 0) {
-            System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (7 eller flere)" + 
-            " hos de som har hatt viruset:");
-            printHyppigsteSekvenser(hyppigste7);
-        } else if(hyppigste5.size() != 0) {
-            System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (5 eller flere, men faerre enn 7)" +
-            " hos de som har hatt viruset:");
-            printHyppigsteSekvenser(hyppigste5);
-        } else if(hyppigste2.size() != 0) {
-            System.out.println("\n\nSubsekvens(er) som forekommer flest ganger (2 eller flere, men faerre enn 5)" +
-            " hos de som har hatt viruset:");
-            printHyppigsteSekvenser(hyppigste2);
+            if(frekvensDiff >= hoeyesteFrekvensDiff) {
+                hoeyesteFrekvensDiff = frekvensDiff;
+                hyppigste = new ArrayList<>();
+                hyppigste.add(subsekVirus);
+            }
+
+            printHyppigsteSekvenser(hyppigste);
         }
     }
     
     // Hjelpemetode for utskrift av hyppigste subsekvenser
-    private static void printHyppigsteSekvenser(ArrayList<Subsekvens> hyppigste) {
+    private static void printHyppigsteSekvenser(List<Subsekvens> hyppigste) {
         for(Subsekvens subsek : hyppigste) {
             System.out.println(subsek);
         }
