@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
@@ -76,33 +77,57 @@ public class Hovedprogram {
         // Finner subsekvensene som forekommer i stoerre grad hos de som har hatt viruset
         Map<String, Subsekvens> hMapVirus = monitorVirus.hentForste();
         Map<String, Subsekvens> hMapIkkeVirus = monitorIkkeVirus.hentForste();
-        List<Subsekvens> hyppigste = null;
+        finnHyppigeFrekvenser(hMapVirus, hMapIkkeVirus);
         
-        int hoeyesteFrekvensDiff = 0;
-        Subsekvens hyppigsteSubsekvens = null;
-        for(String noekkel : hMapVirus.keySet()) {
-            Subsekvens subsekIkkeVirus = hMapIkkeVirus.get(noekkel);
-            Subsekvens subsekVirus = hMapVirus.get(noekkel);
-            
-            int frekvensDiff = 0;
-            if(subsekIkkeVirus == null) frekvensDiff = subsekVirus.hentAntall();
-            else if(subsekIkkeVirus != null) frekvensDiff = subsekVirus.hentAntall() - subsekIkkeVirus.hentAntall();
-
-            if(frekvensDiff >= hoeyesteFrekvensDiff) {
-                hoeyesteFrekvensDiff = frekvensDiff;
-                hyppigste = new ArrayList<>();
-                hyppigste.add(subsekVirus);
-            }
-
-            printHyppigsteSekvenser(hyppigste);
-        }
     }
+     
     
-    // Hjelpemetode for utskrift av hyppigste subsekvenser
-    private static void printHyppigsteSekvenser(List<Subsekvens> hyppigste) {
-        for(Subsekvens subsek : hyppigste) {
-            System.out.println(subsek);
-        }
-        System.out.println();
-    }
+    public static void finnHyppigeFrekvenser(
+            Map<String, Subsekvens> hMapVirus, Map<String, Subsekvens> hMapIkkeVirus) {
+
+                Map<Integer, List<Subsekvens>> hyppigste = new HashMap<>();
+                int hoeyesteFrekvensDiff = 0;
+                for(String noekkel : hMapVirus.keySet()) {
+                    Subsekvens subsekIkkeVirus = hMapIkkeVirus.get(noekkel);
+                    Subsekvens subsekVirus = hMapVirus.get(noekkel);
+                    
+                    int frekvensDiff = 0;
+                    if(subsekIkkeVirus == null) frekvensDiff = subsekVirus.hentAntall();
+                    else if(subsekIkkeVirus != null) frekvensDiff = subsekVirus.hentAntall() - subsekIkkeVirus.hentAntall();
+        
+                    if(!hyppigste.keySet().contains(frekvensDiff) && frekvensDiff > 0) {
+                        hoeyesteFrekvensDiff = frekvensDiff;
+                        List<Subsekvens> nySubsekListe = new ArrayList<>();
+                        nySubsekListe.add(subsekVirus);
+                        hyppigste.put(frekvensDiff, nySubsekListe);
+                    } else if(hyppigste.keySet().contains(frekvensDiff) && frekvensDiff > 0){
+                        hyppigste.get(frekvensDiff).add(subsekVirus);
+                    }
+                }
+        
+                if(hoeyesteFrekvensDiff < 7) {
+                    System.out.printf(
+                        "\nSubsekvens(er) som forekommer oftest blant de smittede, med %d flere forekomster:\n",
+                        hoeyesteFrekvensDiff
+                    );
+                    for(Subsekvens subsek : hyppigste.get(hoeyesteFrekvensDiff)) {
+                        System.out.println(subsek);
+                    }
+                    System.out.println();
+                } else {
+                    for(Integer frekvensDiff : hyppigste.keySet()) {
+                        if(frekvensDiff >= 7) {
+                            System.out.printf(
+                                "\nSubsekvens(er) som forekommer oftest blant de smittede, med %d flere forekomster:\n",
+                                frekvensDiff
+                    );
+                            for(Subsekvens subsek : hyppigste.get(frekvensDiff)) {
+                                System.out.println(subsek);
+                            }
+                        }
+                    }
+                    System.out.println();
+                }
+       
+    }    
 }
