@@ -109,7 +109,7 @@ public class Hovedprogram {
                 printDominanteSubsekvenser(kategoriserteFrekvenser, dominantFrekvens);
     }
 
-    
+
     public static void printDominanteSubsekvenser(
         Map<Integer, List<Subsekvens>> kategoriserte, 
         int dominantFrekvens) {
@@ -137,6 +137,5 @@ public class Hovedprogram {
                 }
                 System.out.println();
             }
-
     }
 }
