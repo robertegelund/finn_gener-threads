@@ -86,6 +86,7 @@ public class Hovedprogram {
             Map<String, Subsekvens> hMapVirus, Map<String, Subsekvens> hMapIkkeVirus) {
 
                 Map<Integer, List<Subsekvens>> hyppigste = new HashMap<>();
+                
                 int hoeyesteFrekvensDiff = 0;
                 for(String noekkel : hMapVirus.keySet()) {
                     Subsekvens subsekIkkeVirus = hMapIkkeVirus.get(noekkel);
