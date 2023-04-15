@@ -19,7 +19,8 @@ public class Hovedprogram {
         try {
             sc = new Scanner(new File(args[0] + "/metadata.csv")); 
         } catch(FileNotFoundException e) {
-            System.out.println("[ERROR] Finner ikke filen: metadata.csv");
+            System.out.println("[ERROR] Finner ikke filen: metadata.csv. Soerg for at mappestien er korrekt.");
+            System.exit(1);
         }
 
         // Oppretter monitorer, leser inn filer og legger inn subsekvenser
