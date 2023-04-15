@@ -77,17 +77,17 @@ public class Hovedprogram {
         // Finner subsekvensene som forekommer i stoerre grad hos de som har hatt viruset
         Map<String, Subsekvens> hMapVirus = monitorVirus.hentForste();
         Map<String, Subsekvens> hMapIkkeVirus = monitorIkkeVirus.hentForste();
-        finnHyppigeFrekvenser(hMapVirus, hMapIkkeVirus);
+        sorterFrekvenser(hMapVirus, hMapIkkeVirus);
         
     }
      
     
-    public static void finnHyppigeFrekvenser(
+    public static void sorterFrekvenser(
             Map<String, Subsekvens> hMapVirus, Map<String, Subsekvens> hMapIkkeVirus) {
 
-                Map<Integer, List<Subsekvens>> hyppigste = new HashMap<>();
+                Map<Integer, List<Subsekvens>> kategoriserteFrekvenser = new HashMap<>();
                 
-                int hoeyesteFrekvensDiff = 0;
+                int dominantFrekvens = 0;
                 for(String noekkel : hMapVirus.keySet()) {
                     Subsekvens subsekIkkeVirus = hMapIkkeVirus.get(noekkel);
                     Subsekvens subsekVirus = hMapVirus.get(noekkel);
@@ -96,39 +96,47 @@ public class Hovedprogram {
                     if(subsekIkkeVirus == null) frekvensDiff = subsekVirus.hentAntall();
                     else if(subsekIkkeVirus != null) frekvensDiff = subsekVirus.hentAntall() - subsekIkkeVirus.hentAntall();
         
-                    if(!hyppigste.keySet().contains(frekvensDiff) && frekvensDiff > 0) {
-                        hoeyesteFrekvensDiff = frekvensDiff;
+                    if(!kategoriserteFrekvenser.keySet().contains(frekvensDiff) && frekvensDiff > 0) {
+                        dominantFrekvens = frekvensDiff;
                         List<Subsekvens> nySubsekListe = new ArrayList<>();
                         nySubsekListe.add(subsekVirus);
-                        hyppigste.put(frekvensDiff, nySubsekListe);
-                    } else if(hyppigste.keySet().contains(frekvensDiff) && frekvensDiff > 0){
-                        hyppigste.get(frekvensDiff).add(subsekVirus);
+                        kategoriserteFrekvenser.put(frekvensDiff, nySubsekListe);
+                    } else if(kategoriserteFrekvenser.keySet().contains(frekvensDiff) && frekvensDiff > 0){
+                        kategoriserteFrekvenser.get(frekvensDiff).add(subsekVirus);
                     }
                 }
-        
-                if(hoeyesteFrekvensDiff < 7) {
-                    System.out.printf(
-                        "\nSubsekvens(er) som forekommer oftest blant de smittede, med %d flere forekomster:\n",
-                        hoeyesteFrekvensDiff
-                    );
-                    for(Subsekvens subsek : hyppigste.get(hoeyesteFrekvensDiff)) {
-                        System.out.println(subsek);
-                    }
-                    System.out.println();
-                } else {
-                    for(Integer frekvensDiff : hyppigste.keySet()) {
-                        if(frekvensDiff >= 7) {
-                            System.out.printf(
-                                "\nSubsekvens(er) som forekommer oftest blant de smittede, med %d flere forekomster:\n",
-                                frekvensDiff
-                    );
-                            for(Subsekvens subsek : hyppigste.get(frekvensDiff)) {
-                                System.out.println(subsek);
-                            }
+
+                printDominanteSubsekvenser(kategoriserteFrekvenser, dominantFrekvens);
+    }
+
+    
+    public static void printDominanteSubsekvenser(
+        Map<Integer, List<Subsekvens>> kategoriserte, 
+        int dominantFrekvens) {
+
+            if(dominantFrekvens < 7) {
+                System.out.printf(
+                    "\nSubsekvens(er) som forekommer oftest blant de smittede, med %d flere forekomster:\n",
+                    dominantFrekvens
+                );
+                for(Subsekvens subsek : kategoriserte.get(dominantFrekvens)) {
+                    System.out.println(subsek);
+                }
+                System.out.println();
+            } else {
+                for(Integer frekvensDiff : kategoriserte.keySet()) {
+                    if(frekvensDiff >= 7) {
+                        System.out.printf(
+                            "\nSubsekvens(er) som forekommer oftest blant de smittede, med %d flere forekomster:\n",
+                            frekvensDiff
+                );
+                        for(Subsekvens subsek : kategoriserte.get(frekvensDiff)) {
+                            System.out.println(subsek);
                         }
                     }
-                    System.out.println();
                 }
-       
-    }    
+                System.out.println();
+            }
+
+    }
 }
