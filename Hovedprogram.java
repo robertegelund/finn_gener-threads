@@ -27,7 +27,7 @@ public class Hovedprogram {
         Monitor2 monitorVirus = new Monitor2();
         Monitor2 monitorIkkeVirus = new Monitor2();
         
-        ArrayList<Thread> lesetraader = new ArrayList<>(); 
+        List<Thread> lesetraader = new ArrayList<>(); 
         while(sc.hasNextLine()) {
             String[] deler = sc.nextLine().split(",");
             String filnavn = args[0] + "/" + deler[0];
@@ -57,7 +57,7 @@ public class Hovedprogram {
         monitorVirus.settFlettingerIgjen(monitorVirus.antall() - 1);
         monitorIkkeVirus.settFlettingerIgjen(monitorIkkeVirus.antall() - 1);
 
-        ArrayList<Thread> flettetraader = new ArrayList<>();
+        List<Thread> flettetraader = new ArrayList<>();
         for(int i = 0; i < ANT_TELLETRAADER; i++) {
             Thread fletterVirus = new Thread(new FletteTraad(monitorVirus));
             Thread fletterIkkeVirus = new Thread(new FletteTraad(monitorIkkeVirus));
