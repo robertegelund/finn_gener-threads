@@ -45,6 +45,7 @@ public class Hovedprogram {
         
         // Soerger for at main-traaden venter til alle lesetraadene er ferdige foer flettetraadene opprettes
         try {
+            System.out.println("`\nStarter innlesning, produksjon og fletting av hashmaps...\n");
             for(Thread traad : lesetraader) {
                 traad.join();
             }
@@ -57,6 +58,7 @@ public class Hovedprogram {
         monitorVirus.settFlettingerIgjen(monitorVirus.antall() - 1);
         monitorIkkeVirus.settFlettingerIgjen(monitorIkkeVirus.antall() - 1);
 
+        
         List<Thread> flettetraader = new ArrayList<>();
         for(int i = 0; i < ANT_TELLETRAADER; i++) {
             Thread fletterVirus = new Thread(new FletteTraad(monitorVirus));
@@ -64,7 +66,7 @@ public class Hovedprogram {
             flettetraader.add(fletterVirus); flettetraader.add(fletterIkkeVirus);
             fletterVirus.start(); fletterIkkeVirus.start();
         }
-
+        
         // Soerger for at main-traaden venter til alle flettetraadene er ferdige
         try {
             for(Thread traad : flettetraader) {
