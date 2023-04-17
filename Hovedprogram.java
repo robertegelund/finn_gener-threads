@@ -49,7 +49,7 @@ public class Hovedprogram {
                 traad.join();
             }
         } catch (InterruptedException e) {
-            System.out.println("[ERROR] En lesetraad ble avbrutt. Programmet avsluttes.");
+            System.out.println("[ERROR] Main-traaden ble avbrutt. Programmet avsluttes.");
             System.exit(1);
         }
         
@@ -66,20 +66,19 @@ public class Hovedprogram {
         }
 
         // Soerger for at main-traaden venter til alle flettetraadene er ferdige
-        for(Thread traad : flettetraader) {
-            try {
+        try {
+            for(Thread traad : flettetraader) {
                 traad.join();
-            } catch(InterruptedException e) {
-                System.out.println("[ERROR] En flettetraad med ble avbrutt," + 
-                "men de andre flettetraadene fortsetter.");
             }
+        } catch(InterruptedException e) {
+                System.out.println("[ERROR] Main-traaden ble avbrutt. Programmet avsluttes.");
+                System.exit(1);
         }
 
         // Finner subsekvensene som forekommer i stoerre grad hos de som har hatt viruset
         Map<String, Subsekvens> hMapVirus = monitorVirus.hentForste();
         Map<String, Subsekvens> hMapIkkeVirus = monitorIkkeVirus.hentForste();
         sorterFrekvenser(hMapVirus, hMapIkkeVirus);
-        
     }
      
     
