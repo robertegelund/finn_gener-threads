@@ -111,8 +111,7 @@ public class Hovedprogram {
 
 
     public static void printDominanteSubsekvenser(
-        Map<Integer, List<Subsekvens>> kategoriserte, 
-        int dominantFrekvens) {
+        Map<Integer, List<Subsekvens>> kategoriserte, int dominantFrekvens) {
 
             if(dominantFrekvens < 7) {
                 System.out.printf(
