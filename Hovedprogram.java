@@ -27,6 +27,8 @@ public class Hovedprogram {
         Monitor2 monitorVirus = new Monitor2();
         Monitor2 monitorIkkeVirus = new Monitor2();
         
+        System.out.println("`\nStarter innlesning, produksjon og fletting av hashmaps...\n");
+
         List<Thread> lesetraader = new ArrayList<>(); 
         while(sc.hasNextLine()) {
             String[] deler = sc.nextLine().split(",");
@@ -45,7 +47,6 @@ public class Hovedprogram {
         
         // Soerger for at main-traaden venter til alle lesetraadene er ferdige foer flettetraadene opprettes
         try {
-            System.out.println("`\nStarter innlesning, produksjon og fletting av hashmaps...\n");
             for(Thread traad : lesetraader) {
                 traad.join();
             }
